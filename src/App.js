@@ -1,25 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import { useLocalState } from './assets/utils/useLocalState';
+import { Route, Routes} from 'react-router-dom';
+import LoginPage from './components/LoginPage';
+import HomePage from './components/HomePage';
+import Dashboard from './components/Dashboard';
+import PrivateRoute from './components/PrivateRoute';
+import AssigmentView from './components/AssignmentView';
 
 function App() {
+
+
+  const [jwt, setJwt] = useLocalState("", "jwt")
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className = "App">
+      <Routes>
+        <Route path= "/login" element ={<LoginPage />} />
+        <Route path= "/dashboard" element ={<PrivateRoute><Dashboard data = {jwt} /></PrivateRoute>} />
+        <Route path= "/assigments/:id" element ={<PrivateRoute><AssigmentView data = {jwt} /></PrivateRoute>} />
+        <Route path= "/" element ={<HomePage/>} />
+      </Routes>
     </div>
   );
+
 }
 
 export default App;
