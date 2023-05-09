@@ -1,4 +1,4 @@
-function fetcher (url, requestMethod, jwt, requestBody) {
+async function fetcher (url, requestMethod, jwt, requestBody) {
     const fetchData = {
         headers: {
             "Content-Type": "application/json"
@@ -14,8 +14,8 @@ function fetcher (url, requestMethod, jwt, requestBody) {
         fetchData.body = JSON.stringify(requestBody)
     }
 
-    return fetch(url, fetchData).then((res) => {
-        if (res.status === 200) return res.json()
-    });
+    const res = await fetch(url, fetchData);
+    if (res.status === 200)
+        return res.json();
 }
 export default fetcher;
