@@ -15,8 +15,6 @@ function useLocalState(defaultValue, key) {
     React.useEffect(()=> {
         window.localStorage.setItem(key, JSON.stringify(value));
      }, [key, value]);
-
-     console.log("value", value)
      return [value,setValue];
     }
 
