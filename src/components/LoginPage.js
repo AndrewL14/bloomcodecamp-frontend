@@ -5,7 +5,7 @@ function LoginPage(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const [jwt, setJwt] = useLocalState("", "jwt");
+    const [jwt, setJwt] = useLocalState("dsaf3ref3rt43frsefe", "jwt");
 
     const handleUsernameChange = event => {
         setUsername(event.target.value);
@@ -20,16 +20,14 @@ function LoginPage(props) {
         console.log('submitted:', { username, password });
 
         const reqBody = {"username": username, "password": password};
-        // const requestOptions = {
-        //     method: 'post',
-        //     headers: { 'Content-Type': 'application/json'},
-        //     body: JSON.stringify({username, password})
-        // };
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(reqBody)
+        };
         
 
-
-        fetch('http://localhost:8080/api/auth/login', {"headers": { "ContentType": "application/json"}, 
-        method: "POST", headers: { 'Content-Type': 'application/json'}, body: JSON.stringify(reqBody)}).then((res) => {
+        await fetch('http://localhost:8080/api/auth/login', requestOptions).then((res) => {
             if (res.status === 200) {
                 return Promise.all([res, res.headers]);
             } else {
@@ -37,34 +35,23 @@ function LoginPage(props) {
             }
         })
         .then(([body, headers]) => {
-            console.log(headers.get("authorization"));
             setJwt(headers.get("Authorization"));
             window.location.href = "http://localhost:3000/dashboard";
         })
         .catch((message) => alert(message));
+    }
 
+    const s = event => {
+        event.preventDefault();
+        window.location.href = "http://localhost:3000/dashboard";
+    }
 
-
-        // try {
-        //     const response = await fetch('http://localhost:8080/api/auth/login', requestOptions);
-        //     const data = await response.json();
-        //     console.log('Response:', data);
-            
-        //     if (response.status === 200 || response.status === 202) {
-        //         navigate("/");
-        //     } else {
-        //         navigate("/");
-        //     }
     
-        // } catch (error) {
-        //     console.log(error);
-        // }
-    }    
 
         return (
             <div className="login-box">
                 <div className="login-form">
-                    <form onSubmit={handleSubmit}>
+                    <form>
                         <h2>Login</h2>
                         <label className="login-input">
                             Username:
@@ -76,7 +63,7 @@ function LoginPage(props) {
                             <input type="password" required="required" value={password} onChange={handlePasswordChange} />
                         </label>
                             <br />
-                        <button className="login-button" type="submit">Login</button>
+                        <button className="login-button" type="submit" onClick={handleSubmit}>Login</button>
                     </form>
                 </div>    
             </div>
